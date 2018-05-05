@@ -1,12 +1,14 @@
 import {parse} from 'bytes'
 import {newPage} from './browser'
+// import {respected} from './respected'
 
 declare const $: any
 
-async function details(url: string) {
+async function details(path) {
     let page = await newPage()
     await page.setViewport({width: 1024, height: 1024})
     await page.setRequestInterception(true);
+
     page.on('request', interceptedRequest => {
         if (interceptedRequest.url().match(/adv/i) || interceptedRequest.url().match(/css/i))
             interceptedRequest.abort();
@@ -14,23 +16,18 @@ async function details(url: string) {
             interceptedRequest.continue();
     });
 
-    await page.goto(url)
+    await page.goto(path)
 
     let details = await page
         .evaluate(() => {
-            let name = $('h1').html().trim()
-            let magnet = $('a.button--big')
-                .map(function () {
-                    return $(this).attr('href')
-                })
-                .toArray()
-                .filter((m: string) => m.match(/magnet/))
-                .pop()
+            let magnet = $('a').filter(function () {
+                return $(this).html().match(/magnet download/i)
+            }).attr('href')
 
             return {
-                name: name,
-                magnet: magnet || null,
-                source: 'kat'
+                name: $('h1').html().trim(),
+                magnet: magnet,
+                source: '1337x'
             }
         })
 
@@ -39,7 +36,7 @@ async function details(url: string) {
     return details
 }
 
-async function search(q: string, p: number) {
+async function search(q, p) {
     let page = await newPage()
     await page.setViewport({width: 1024, height: 1024})
     await page.setRequestInterception(true);
@@ -51,20 +48,20 @@ async function search(q: string, p: number) {
             interceptedRequest.continue();
     });
 
-    await page.goto(`http://katcr.co/katsearch/page/${p || 0}/${q}`)
+    await page.goto(`http://1337x.to/category-search/${q}/Movies/${p || 1}/`)
 
     let movies = await page
         .evaluate(() => {
-            return $('table.table tr')
+            return $('tr')
                 .map(function () {
                     return {
-                        path: $(this).find('td > div > .text--left > a').attr('href'),
-                        name: $(this).find('td > div > .text--left > a').text(),
-                        size: $(this).find('td[data-title="Size"]').text(),
-                        seeds: $(this).find('td[data-title="Seed"]').text(),
-                        leeches: $(this).find('td[data-title="Leech"]').text(),
-                        uploader: $(this).find('td > div > .text--left > span > span > a').text(),
-                        source: 'kat'
+                        name: $(this).find('td.name a').last().text(),
+                        path: 'http://1337x.to/' + $(this).find('td.name a').last().attr('href'),
+                        size: $(this).find('td.size').html(),
+                        seeds: $(this).find('td.seeds').text(),
+                        leeches: $(this).find('td.leeches').text(),
+                        uploader: $(this).find('td.coll-5 a').text(),
+                        source: '1337x'
                     }
                 })
                 .toArray()
