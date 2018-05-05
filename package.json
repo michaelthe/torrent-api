@@ -1,0 +1,47 @@
+{
+  "name": "torrent-api",
+  "version": "1.0.0",
+  "description": "torrent api",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "build-w": "tsc -w",
+    "test": "ts-jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michaelthe/torrent-api.git"
+  },
+  "keywords": [
+    "torrent",
+    "api"
+  ],
+  "author": "michael theodorides",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/michaelthe/torrent-api/issues"
+  },
+  "homepage": "https://github.com/michaelthe/torrent-api#readme",
+  "dependencies": {
+    "bytes": "^3.0.0",
+    "express": "^4.16.3",
+    "fs-chunk-store": "^1.7.0",
+    "leveldown": "^3.0.1",
+    "levelup": "^2.0.2",
+    "puppeteer": "^1.2.0",
+    "uuid": "^3.2.1",
+    "webtorrent": "^0.99.4"
+  },
+  "devDependencies": {
+    "@types/bytes": "^3.0.0",
+    "@types/express": "^4.11.1",
+    "@types/jest": "^22.2.3",
+    "@types/node": "^8.10.12",
+    "@types/puppeteer": "^1.2.3",
+    "@types/uuid": "^3.4.3",
+    "jest": "^22.4.3",
+    "ts-jest": "^22.4.4",
+    "ts-node": "^6.0.2",
+    "typescript": "^2.8.3"
+  }
+}
